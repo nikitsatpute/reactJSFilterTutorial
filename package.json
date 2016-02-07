@@ -1,0 +1,15 @@
+{
+  "name": "nikitreactjs",
+  "version": "0.0.1",
+  "description": "ReactJS Tutorial",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Nikit",
+  "license": "ISC",
+  "dependencies": {
+    "babel-standalone": "^6.4.4"
+  }
+}

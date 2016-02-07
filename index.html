@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link  href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script src="bower_components/react/react.js"></script>
+     <script src="bower_components/react/react-dom.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+</head>
+<body style="margin-top:10%">
+    <div id="container" class="container" >
+            
+    </div>
+    
+    
+    <script type="text/babel">
+    
+    var EpisodeRow = React.createClass({
+        render:function(){
+            return(
+                    <tr>
+                                <td>{this.props.episode.title}</td>
+                                <td>
+                                    <a href="#">View</a>
+                                </td>
+                            </tr>
+                );
+        }
+    });
+    
+    var EpisodeTable = React.createClass({
+        
+        render: function(){
+        var props = this.props;
+        var rows = this.props.episodes
+        .filter(function(episode){
+            return episode.title.toString().toLowerCase().indexOf(props.filterText.toString().toLowerCase()) > -1;
+        })
+        .map(function(episode){
+           return <EpisodeRow key={episode.title} episode={episode}/>
+        });
+        
+       return(
+                         
+                            <div className="row spacer">
+                                <div className="col-lg-4 col-lg-offset-4">
+                                    <table width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Link</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {rows}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+            );
+        }
+    });
+    
+    
+    var SearchBar = React.createClass({
+        
+        handleChange: function() {
+                this.props.onFilterInput(
+                    this.refs.filterTextInput.value
+                );
+            },
+        
+        handleFilterInput:function(filterTextInput){
+            this.setState({
+                    filterText:filterText
+            });
+        },
+        
+        render: function(){
+            return(
+                      <div className="row ">
+                                <div className="col-lg-4 col-lg-offset-4">
+                                    <input ref="filterTextInput" type="search" value={this.props.filterText} onChange={this.handleChange}className="form-control" placeholder="Search for episode" />
+                                </div>
+                       </div>
+                );
+        }
+    });
+    
+    
+    var FilterableEpisodeTable = React.createClass({
+        
+        getInitialState: function(){
+            return{
+                    filterText:''
+                };
+        },
+        
+        handleFilterInput:function(filterText){
+            this.setState({
+                filterText:filterText
+            });
+        },
+        
+        render:function(){
+            return(
+                        <div className="spacer">
+                            <SearchBar onFilterInput={this.handleFilterInput} filterText={this.state.filterText}/>
+                            <EpisodeTable filterText={this.state.filterText} episodes={this.props.episodes}/>
+                        </div>
+                );
+        }
+    });
+    
+    var episodes=[{
+                    title:"React With Nikit",
+                    link:"https://facebook.github.io/react/",
+                    date:new Date(2016,1,6)
+                  },
+                  {
+                    title:"Angular With Nikit",
+                    link:"https://angular.io/",
+                    date:new Date(2016,1,5)
+                  },
+                  {
+                    title:"SpringFramework With Nikit",
+                    link:"https://spring.io/",
+                    date:new Date(2016,1,4)
+                  },
+                  {
+                    title:"MongoDB With Nikit",
+                    link:"https://www.mongodb.org/",
+                    date:new Date(2016,1,3)
+                  }
+                 ];
+    
+    ReactDOM.render(<FilterableEpisodeTable episodes={episodes}/>,document.getElementById('container'));
+    
+    </script>
+    
+</body>
+</html>
